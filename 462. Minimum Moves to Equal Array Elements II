@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+        
+        // Sort the array
+        sort(nums.begin(), nums.end());
+
+        // Find the median
+        int med = nums[nums.size() / 2];
+
+        // Calculate total moves to make all elements equal to the median
+        int moves = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            moves += abs(nums[i] - med);
+        }
+
+        return moves;
+    }
+};
