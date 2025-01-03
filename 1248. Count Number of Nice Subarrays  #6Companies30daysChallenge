@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k){
+        int count = 0;
+        int oddCount = 0; // Tracks the number of odd numbers encountered so far
+        unordered_map<int, int> prefixCount;
+        
+        // Initialize the map with {0: 1} to handle the case when a subarray itself has exactly k odd numbers
+        prefixCount[0] = 1;
+
+        for (int num : nums) {
+            // If the current number is odd, increment oddCount
+            if (num % 2 != 0) {
+                oddCount++;
+            }
+
+            // Check if there exists a prefix subarray with exactly k odd numbers
+            if (prefixCount.find(oddCount - k) != prefixCount.end()) {
+                count += prefixCount[oddCount - k];
+            }
+
+            // Record the current oddCount in the map
+            prefixCount[oddCount]++;
+        }
+        
+        return count;
+    }
+};
