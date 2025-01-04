@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int maxProduct(string s) {
+
+        int n = s.size();
+        vector<int> palindromicSubsequences;
+        vector<int> bitmasks;
+
+        // Generate all subsequences and check for palindromes
+        for (int mask = 1; mask < (1 << n); mask++) {  // Iterate through all possible subsequences
+            string subsequence = "";
+            int bitmask = 0;
+            for (int i = 0; i < n; i++) {
+                if (mask & (1 << i)) {
+                    subsequence += s[i];
+                    bitmask |= (1 << i);  // Set the bit for the current position
+                }
+            }
+
+            // Check if the subsequence is a palindrome
+            string reversed = subsequence;
+            reverse(reversed.begin(), reversed.end());
+            if (subsequence == reversed) {
+                palindromicSubsequences.push_back(subsequence.size());
+                bitmasks.push_back(bitmask);
+            }
+        }
+
+        int maxProduct = 0;
+        int m = palindromicSubsequences.size();
+
+        // Calculate the product of lengths of all pairs of non-overlapping palindromic subsequences
+        for (int i = 0; i < m; i++) {
+            for (int j = i + 1; j < m; j++) {
+                // Ensure subsequences do not overlap (bitwise AND of bitmasks is zero)
+                if ((bitmasks[i] & bitmasks[j]) == 0) {
+                    maxProduct = max(maxProduct, palindromicSubsequences[i] * palindromicSubsequences[j]);
+                }
+            }
+        }
+
+        return maxProduct;
+    }
+};
